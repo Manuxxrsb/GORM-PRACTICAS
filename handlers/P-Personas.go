@@ -10,27 +10,24 @@ import (
 
 func PutPersona(db *gorm.DB) gin.HandlerFunc {
 	return func(Request *gin.Context) {
+		id := Request.Param("id")
+		var Persona models.Persona
+		if err := db.First(&Persona, id).Error; err != nil {
+			Request.JSON(http.StatusNotFound, gin.H{"error": "Persona no encontrado " + err.Error()})
+			return
+		}
 
-		//Obtener el ID de usuario del cuerpo de la solicitud
-		var Persona_Nueva models.Persona
-		if err := Request.BindJSON(&Persona_Nueva); err != nil {
+		var input models.Persona
+		if err := Request.ShouldBindJSON(&input); err != nil {
 			Request.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		// Encuentra al usuario en la base de datos
-		var Persona models.Persona
-		db.First(&Persona, Persona.ID)
-		if Persona.ID == 0 {
-			Request.JSON(http.StatusNotFound, gin.H{"error": "Persona no encontrado"})
-			return
-		}
-		// Actualiza al usuario en la base de datos
-		err := db.Model(&Persona).Updates(Persona_Nueva).Error
-		if err != nil {
-			Request.JSON(http.StatusInternalServerError, gin.H{"error": "No se pudo actualizar en la BD" + err.Error()})
+
+		if err := db.Model(&Persona).Updates(input).Error; err != nil {
+			Request.JSON(http.StatusInternalServerError, gin.H{"error": "Error al actualizar la Persona en la BD " + err.Error()})
 			return
 		}
 
-		Request.JSON(http.StatusOK, gin.H{"message": "Persona actualizado con éxito"})
+		Request.JSON(http.StatusOK, Persona)
 	}
 }
