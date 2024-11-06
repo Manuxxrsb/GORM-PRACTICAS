@@ -1,5 +1,5 @@
 # GORM-PRACTICAS
- Repositorio de Golang para trabajar con funcionalidades de GORM
+ Repositorio de Golang para trabajar con funcionalidades de GORM , GIN 
 
  * Conexion a base de datos
  * Creacion de modelos
