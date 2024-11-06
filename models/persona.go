@@ -1,14 +1,11 @@
 package models
 
-type Persona struct {
-	ID       uint `gorm:"primaryKey;autoIncrement"`
-	Nombre   string
-	Apellido string
-	Objetos  []Objeto `gorm:"foreignKey:PersonaID;references:ID"`
-}
+import "gorm.io/gorm"
 
-type Objeto struct {
-	ID        uint `gorm:"primaryKey;autoIncrement"`
-	Nombre    string
-	PersonaID uint `gorm:"references:ID"`
+type Persona struct {
+	gorm.Model
+
+	Nombre   string `json:"nombre"`
+	Apellido string `json:"apellido"`
+	Objetos  []Objeto
 }
