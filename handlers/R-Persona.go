@@ -29,6 +29,9 @@ func GetPersona(db *gorm.DB) gin.HandlerFunc {
 			Request.JSON(http.StatusNotFound, gin.H{"error": "Persona no encontrado " + err.Error()})
 			return
 		}
+
+		//agregamos la busqueda para los objetos de la Persona
+		db.Model(&Persona).Association("Objetos").Find(&Persona.Objetos)
 		Request.JSON(http.StatusOK, Persona)
 	}
 }

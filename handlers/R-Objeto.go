@@ -14,7 +14,7 @@ func GetallObjeto(db *gorm.DB) gin.HandlerFunc {
 		err := db.Find(&Objeto).Error //todos los registros que coinciden con el modelo
 
 		if err != nil {
-			Request.JSON(http.StatusInternalServerError, gin.H{"error": "No existen Peersonas " + err.Error()})
+			Request.JSON(http.StatusInternalServerError, gin.H{"error": "No existen Objetos " + err.Error()})
 			return
 		}
 		Request.JSON(http.StatusOK, Objeto)
